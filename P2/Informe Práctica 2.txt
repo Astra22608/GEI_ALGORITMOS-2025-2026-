@@ -1,0 +1,202 @@
+Informe Práctica 2:
+
+    Introducción: 
+
+            En esta práctica estudiamos el comportamiento de dos algoritmos de ordenación: Ordeación por Inserción
+        y ordenación Shell. El objetivo es realizar una comparación entre el rendimiento de ambos 
+        además de determinar sus complejidades.
+        
+        El caso medio de la ordenación por inserción posee una complejidad cuadrática O(n^2) en cambio la ordenación Shell muestra
+        una mejora con respecto al algoritmo anterior mediante el uso de secuencias de incrementos que reducen 
+        la cantidad de comparaciones y movimientos. Las secuencias empleadas son las siguientes:
+
+        -Hibbard-> 2^k − 1: (1, 3, 7, 15, 31, 63, 127, ...)
+        -Knuth-> (3^k − 1)/2: (1, 4, 13, 40, 121, 364, 1093, ...) 
+        -Sedgewick-> 4^k + 3 × 2^(k−1) + 1 para k ≥ 1: (1, 8, 23, 77, 281, 1073, 4193, ...)
+        -Ciura-> (1, 4, 10, 23, 57, 132, 301, 701, 1750) Redondeo con la multiplicacion del ultimo valor por 2.25       
+        
+    Características del ordenador usado para la medición de tiempos:
+    
+        Ordenador:Vivobook_ASUSLaptop X1504VA_F1504VA
+        S.O: Linux, 6.8.0-41-generic
+        Compilador: gcc (Ubuntu 13.2.0-23ubuntu4) 13.2.0
+        CPU: 13th Gen Intel(R) Core(TM) i7-1355U
+        Memoria RAM: 16Gb
+        Unidades de tiempo: microsegundos (µs)
+
+
+    Metodología:
+            Para determinar la complejidad empírica de los algoritmos, medimos el tiempo de ejecución t(n) para diferentes tamaños de entrada
+        n y calculamos los cocientes t(n)/f(n) para diferentes funciones f(n) que representan distintas complejidades. Resumiendo:
+
+            ·Si t(n)/f(n) -> infinito, entonces f(n) es una cota subestimada (complejidad real mayor).
+
+            ·Si t(n)/f(n) -> 0 cuando n -> infinito, entonces f(n) es una cota sobrestimada (complejidad real menor).
+
+            ·Si t(n)/f(n) -> constante cuando n -> infinito, entonces f(n) representa la complejidad real del algoritmo.
+            
+    Resultados: (Con un umbral de confianza de 500µs):
+        Primero, realizaremos unas aclaraciones:
+            · Para tiempos pequeños (<500µs), ejecutamos el algoritmos 1000 veces, calculamos su promedio y marcamos con un * en las tablas.
+            · Para mejorar la optimización, reiniciamos los vectores en cada medición.
+        
+        Exponemos los tiempos de ejecución de los algoritmos con distintas opciones:
+
+        Ordenación por inserción con inicialización descendente
+
+         n           t(n)           t(n)/n^1.8       t(n)/n^2        t(n)/n^2.2
+
+*       500        1.363000         0.000019         0.000005         0.000002
+       1000     1066.000000         0.004244         0.001066         0.000268
+       2000     4769.000000         0.005452         0.001192         0.000261
+       4000    18653.000000         0.006124         0.001166         0.000222
+       8000    71839.000000         0.006773         0.001122         0.000186
+      16000   269763.000000         0.007304         0.001054         0.000152
+      32000  1110139.000000         0.008632         0.001084         0.000136
+
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/n^1.8 -> Los valores aumentan, indicando que n^0.8 es una cota subestimada.
+    ·t(n)/n^2-> Los valores se mantienen casi constantes, confirmando la complejidad lineal O(n).
+    ·t(n)/n^2.2 -> Los valores disminuyen, indicando que n·log(n) es una cota sobrestimada.
+
+    Constante asintótica = 0.0011
+
+Ordenación por inserción con inicialización ascendente
+
+         n           t(n)           t(n)/n^0.8        t(n)/n        t(n)/n*log(n)
+
+*       500        1.278000         0.008858         0.002556         0.000411
+*      1000        2.737000         0.010896         0.002737         0.000396
+*      2000        5.641000         0.012898         0.002821         0.000371
+*      4000       11.178000         0.014680         0.002795         0.000337
+*      8000       22.816000         0.017209         0.002852         0.000317
+*     16000       44.529000         0.019291         0.002783         0.000287
+*     32000       88.739000         0.022080         0.002773         0.000267
+
+    *Estas filas son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/n^0.8 -> Los valores aumentan, indicando que n^0.8 es una cota subestimada.
+    ·t(n)/n -> Los valores permanecen aproximadamente constantes, confirmando la complejidad lineal O(n).
+    ·t(n)/(n*log(n)) -> Los valores disminuyen, indicando que n*log(n) es una cota sobrestimada.
+
+    Constante asintótica = 0.0028
+
+Ordenación por inserción con inicialización desordenada
+
+         n           t(n)           t(n)/n^1.8       t(n)/n^2        t(n)/n^2.2
+
+*       500      148.510000         0.002059         0.000594         0.000171
+       1000      587.000000         0.002337         0.000587         0.000147
+       2000     2607.000000         0.002980         0.000652         0.000143
+       4000     9186.000000         0.003016         0.000574         0.000109
+       8000    35702.000000         0.003366         0.000558         0.000092
+      16000   143017.000000         0.003872         0.000559         0.000081
+      32000   571766.000000         0.004446         0.000558         0.000070
+      
+     *Esta fila es el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/n^1.8 -> Los valores aumentan rápidamente, indicando que n^0.8 es una cota subestimada.
+    ·t(n)/n^2 -> Los valores crecen de forma significativa, mostrando que la complejidad no es lineal.
+    ·t(n)/n^2.2 -> Los valores también aumentan, por lo que n·log(n) es una cota subestimada.
+    
+    Constante asintótica = 0.00055
+    
+    Por tanto, la complejidad empírica de la ordenación por inserción con inicialización desordenada es cuadrática O(n^2).
+
+Ordenación por shell con Hibbard e inicialización desordenada
+
+         n           t(n)           t(n)/n^1.8       t(n)/n^2        t(n)/n^2.2
+
+*       500      199.250000         0.002762         0.000797         0.000230
+       1000      807.000000         0.003213         0.000807         0.000203
+       2000     3143.000000         0.003593         0.000786         0.000172
+       4000    12101.000000         0.003973         0.000756         0.000144
+       8000    49426.000000         0.004660         0.000772         0.000128
+      16000   182696.000000         0.004947         0.000714         0.000103
+      32000   729647.000000         0.005673         0.000713         0.000089
+      
+      *Esta fila es el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/n^1.8 -> Los valores aumentan, indicando que n^1.8 es una cota subestimada.
+    ·t(n)/n^2 -> Los valores se mantienen casi constantes, confirmando la complejidad cuadrática O(n^2).
+    ·t(n)/n^2.2 -> Los valores disminuyen, por lo que n^2.2 es una cota sobrestimada.
+
+    Constante asintótica = 0.000713
+
+Ordenación por shell con Knuth e inicialización desordenada
+
+         n           t(n)           t(n)/n^1.8       t(n)/n^2        t(n)/n^2.2
+
+*       500      205.019000         0.002842         0.000820         0.000237
+       1000      787.000000         0.003133         0.000787         0.000198
+       2000     3539.000000         0.004046         0.000885         0.000193
+       4000    12213.000000         0.004010         0.000763         0.000145
+       8000    49214.000000         0.004640         0.000769         0.000127
+      16000   185110.000000         0.005012         0.000723         0.000104
+      32000   729039.000000         0.005669         0.000712         0.000089
+      
+      *Esta fila es el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/n^1.8 -> Aumentan progresivamente, por tanto n^1.8 es una cota subestimada.
+    ·t(n)/n^2 -> Se mantienen casi constantes, confirmando la complejidad cuadrática O(n^2).
+    ·t(n)/n^2.2 -> Disminuyen, por tanto n^2.2 es una cota sobrestimada.
+
+    Constante asintótica = 0.000713
+
+
+Ordenación por shell con Sedgewick e inicialización desordenada
+
+         n           t(n)           t(n)/n^1.8       t(n)/n^2        t(n)/n^2.2
+
+*       500      198.573000         0.002753         0.000794         0.000229
+       1000      822.000000         0.003272         0.000822         0.000206
+       2000     3123.000000         0.003570         0.000781         0.000171
+       4000    12403.000000         0.004072         0.000775         0.000148
+       8000    49471.000000         0.004664         0.000773         0.000128
+      16000   192961.000000         0.005225         0.000754         0.000109
+      32000   750529.000000         0.005836         0.000733         0.000092
+      
+      *Esta fila es el promedio de 1000 iteraciones del algoritmo.
+      
+    ·t(n)/n^1.8 -> Los valores aumentan, indicando que n^1.8 es una cota subestimada.
+    ·t(n)/n^2 -> Los valores son casi constantes, confirmando la complejidad O(n^2).
+    ·t(n)/n^2.2 -> Los valores disminuyen, por lo que n^2.2 es una cota sobrestimada.
+
+    Constante asintótica = 0.000733
+
+Ordenación por shell con Ciura e inicialización desordenada
+
+         n           t(n)          t(n)/n^1.8        t(n)/n^2        t(n)/n^2.2
+
+*       500      199.588000         0.002767         0.000798         0.000230
+       1000      812.000000         0.003233         0.000812         0.000204
+       2000     3311.000000         0.003785         0.000828         0.000181
+       4000    12317.000000         0.004044         0.000770         0.000147
+       8000    49421.000000         0.004660         0.000772         0.000128
+      16000   185033.000000         0.005010         0.000723         0.000104
+      32000   731637.000000         0.005689         0.000714         0.000090
+      
+      *Esta fila es el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/n^1.8 -> Los valores aumentan, indicando que n^1.8 es una cota subestimada.
+    ·t(n)/n^2 -> Los valores permanecen casi constantes, confirmando la complejidad cuadrática O(n^2).
+    ·t(n)/n^2.2 -> Los valores disminuyen, por lo que n^2.2 es una cota sobrestimada.
+
+Constante asintótica = 0.000713
+
+Conclusiones:
+    Para el algoritmo de Ordenación por Inserción podemos describir dos casos:
+        · El algoritmo tendrá una complejidad lineal en el caso de que el vector este ordenado ascendentemente.
+        · El algoritmo tendrá una complejidad cuadrática en el caso de que el vector este ordenado descendentemente o este desordenado.
+    Para el algoritmo de Ordenación por Shell:
+        · Este algoritmo describe una complejidad cuadrática para los tamaños probados empíricamente.
+        · Aún así, podemos observar que las secuencias Knuth y Ciura muestran un rendimiento ligeramente superior.
+    Por último, podemos destacar que para vectores prácticamente ordenados, la Ordenación por Inserción es muy eficiente, pero para datos
+    totalmente desordenados, la Ordeación por Shell ofrece un mejor rendimiento.
+
+    Participantes:
+        Sandra Pita Piñón.
+        Marcos González Monné.
+        Candela Naya López.
+    Grupo 3.2 
