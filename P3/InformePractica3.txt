@@ -1,0 +1,307 @@
+Informe Práctica 3:
+
+    Introducción: 
+
+            En esta práctica estudiamos el comportamiento de otro algoritmo de ordenación: Ordenación rápida o también conocido como Quicksort. 
+            El algoritmos de Ordenación rápida o Quicksort (en este caso con mediana de 3) es un método de tipo divide y vencerás que consisten en seleccionar
+        un elemento del vector (llamado pivote) y reorganizar los demás elementos de modo que todos los menores que el pivote queden a su izquierda y los mayores
+        a su derecha. Este proceso se repite recursivamente sobre las dos mitades resultantes. Con la implementación que realizamos en esta práctica, cuando los
+        subproblemas son menores que un umbral, dejamos de aplicar este algoritmo de Ordenación rápida (quicksort) y empleamos Ordenación por Inserción, debido a 
+        que es más eficiente para vectores pequeños.
+            El objetivo es conocer el rendimiento de este algoritmo, observar su funcionamiento con distintas situaciones iniciales o con distintos vectores,
+        realizar una comparación del mismo algoritmo, pero con distintos umbrales (en este caso, usaremos umbrales de 1, 10 y 100) y comparar el
+        rendimiento de este algoritmo con el rendimiento del algoritmo de Ordenación por Shell.
+            
+        
+    Características del ordenador usado para la medición de tiempos:
+    
+        Ordenador:Vivobook_ASUSLaptop X1504VA_F1504VA
+        S.O: Linux, 6.8.0-41-generic
+        Compilador: gcc (Ubuntu 13.2.0-23ubuntu4) 13.2.0
+        CPU: 13th Gen Intel(R) Core(TM) i7-1355U
+        Memoria RAM: 16Gb
+        Unidades de tiempo: microsegundos (µs)
+
+
+    Metodología:
+            Para determinar la complejidad empírica de los algoritmos, medimos el tiempo de ejecución t(n) para diferentes tamaños de entrada
+        n y calculamos los cocientes t(n)/f(n) para diferentes funciones f(n) que representan distintas complejidades. Resumiendo:
+
+            ·Si t(n)/f(n) -> infinito, entonces f(n) es una cota subestimada (complejidad real mayor).
+
+            ·Si t(n)/f(n) -> 0 cuando n -> infinito, entonces f(n) es una cota sobrestimada (complejidad real menor).
+
+            ·Si t(n)/f(n) -> constante cuando n -> infinito, entonces f(n) representa la complejidad real del algoritmo.
+            
+    Resultados: (Con un umbral de confianza de 500µs):
+        Primero, realizaremos unas aclaraciones:
+            · Para tiempos pequeños (<500µs), ejecutamos el algoritmos 1000 veces, calculamos su promedio y marcamos con un * en las tablas.
+            · Para mejorar la optimización, reiniciamos los vectores en cada medición.
+        
+        Exponemos los tiempos de ejecución de los algoritmos con distintas opciones:
+
+    Comparación tiempos obtenidos según el umbral:
+     
+        Ordenación rápida con inicialización desordenada y umbral 1:
+
+         n              t(n)            t(n)            t(n)/           t(n)/
+                                  /(n*log(n))^0.89   (n*log(n))    (n*log(n))^1.06
+
+*       500       23.000000         0.017927         0.007402         0.004569
+*      1000       47.000000         0.017992         0.006804         0.004003
+*      2000      107.000000         0.020300         0.007039         0.003950
+*      4000      226.000000         0.021408         0.006812         0.003648
+*      8000      489.000000         0.023272         0.006801         0.003477
+      16000     1031.000000         0.024783         0.006657         0.003250
+      32000     2284.000000         0.027857         0.006881         0.003209
+      64000     4744.000000         0.029476         0.006698         0.002985
+     128000    10117.000000         0.032135         0.006721         0.002863
+     256000    20579.000000         0.033520         0.006455         0.002628
+     512000    43019.000000         0.036031         0.006391         0.002488
+
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.89 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n)) -> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.06 -> Los valores disminuyen, indicando que es una cota sobrestimada.
+
+    Constante asintótica = 0.0068
+
+        Ordenación rápida con inicialización desordenada y umbral 10:
+
+         n           t(n)             t(n)/             t(n)/           t(n)/
+                                (n*log(n))^0.95   (n*log(n))^1.03  (n*log(n))^1.05
+
+*       500       20.000000         0.009622         0.006183         0.004306
+*      1000       46.000000         0.010361         0.006371         0.004280
+*      2000       90.000000         0.009582         0.005642         0.003658
+*      4000      203.000000         0.010297         0.005809         0.003636
+*      8000      442.000000         0.010753         0.005813         0.003515
+*     16000      924.000000         0.010843         0.005620         0.003282
+      32000     2107.000000         0.011985         0.005956         0.003362
+      64000     4362.000000         0.012078         0.005758         0.003140
+     128000     8936.000000         0.012090         0.005529         0.002915
+     256000    18743.000000         0.012431         0.005455         0.002781
+     512000    39431.000000         0.012858         0.005415         0.002669
+
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.95 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n))^1.03-> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.05 -> Los valores disminuyen, indicando que es una cota sobrestimada.
+
+    Constante asintótica = 0.0058
+
+        Ordenación rápida con inicialización desordenada y umbral 100:
+
+         n           t(n)             t(n)/             t(n)/            t(n)/
+                                (n*log(n))^0.86    (n*log(n))^0.94  (n*log(n))^1.03
+
+*       500       21.000000         0.020834         0.007625         0.000606
+*      1000       61.000000         0.030444         0.010083         0.000623 
+*      2000       99.000000         0.025073         0.007524         0.000362
+*      4000      273.000000         0.035339         0.009619         0.000362
+*      8000      566.000000         0.037674         0.009310         0.000275
+*     16000      942.000000         0.032407         0.007276         0.000169
+      32000     2016.000000         0.036005         0.007349         0.000134
+      64000     4595.000000         0.042768         0.007940         0.000114
+     128000     9413.000000         0.045813         0.007741         0.000088
+     256000    19432.000000         0.049602         0.007631         0.000068
+     512000    41677.000000         0.055945         0.007839         0.000055
+
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.86 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n))^0.94-> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.03 -> Los valores disminuyen, indicando que es una cota sobrestimada.
+
+    Constante asintótica = 0.0082
+
+        Ordenación rápida con inicialización ascendente y umbral 1:
+
+         n            t(n)            t(n)/             t(n)/           t(n)/
+                                (n*log(n))^0.87   (n*log(n))^0.925  (n*log(n))^1.03
+
+*       500        6.000000         0.005493         0.003529         0.001517
+*      1000       10.000000         0.004569         0.002809         0.001110
+*      2000       29.000000         0.006670         0.003928         0.001429
+*      4000       51.000000         0.005949         0.003356         0.001125
+*      8000      115.000000         0.006845         0.003700         0.001144
+*     16000      213.000000         0.006502         0.003370         0.000961
+*     32000      431.000000         0.006779         0.003369         0.000887
+*     64000      913.000000         0.007427         0.003540         0.000861
+     128000     2019.000000         0.008523         0.003898         0.000875
+     256000     4158.000000         0.009138         0.004010         0.000832
+     512000     7914.000000         0.009078         0.003823         0.000734
+
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.87 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n))^0.925-> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.03 -> Los valores disminuyen, indicando que es una cota sobrestimada.
+
+    Constante asintótica = 0.0036
+
+
+        Ordenación rápida con inicialización ascendente y umbral 10:
+
+         n           t(n)             t(n)/             t(n)/           t(n)/
+                                (n*log(n))^0.885  (n*log(n))^0.965  (n*log(n))^1.056
+
+*       500        4.000000         0.003246         0.001706         0.000821
+*      1000        7.000000         0.002801         0.001381         0.000618
+*      2000       17.000000         0.003384         0.001566         0.000652
+*      4000       36.000000         0.003592         0.001562         0.000606
+*      8000       68.000000         0.003422         0.001399         0.000506
+*     16000      133.000000         0.003394         0.001305         0.000440
+*     32000      300.000000         0.003899         0.001410         0.000443
+*     64000      657.000000         0.004367         0.001486         0.000436
+     128000     1377.000000         0.004696         0.001505         0.000412
+     256000     3192.000000         0.005603         0.001691         0.000433
+     512000     5800.000000         0.005255         0.001494         0.000357
+
+     *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.885 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n))^0.965-> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.056 -> Los valores disminuyen, indicando que es una cota sobrestimada.
+
+    Constante asintótica = 0.0015
+
+        Ordenación rápida con inicialización ascendente y umbral 100:
+
+         n            t(n)             t(n)/            t(n)/           t(n)/
+                                (n*log(n))^0.91  (n*log(n))^0.971  (n*log(n))^1.09
+
+*       500        2.000000         0.001327         0.000813         0.000312
+*      1000        5.000000         0.001604         0.000935         0.000327
+*      2000       13.000000         0.002034         0.001131         0.000359
+*      4000       20.000000         0.001538         0.000815         0.000236
+*      8000       45.000000         0.001712         0.000866         0.000229
+*     16000       96.000000         0.001817         0.000877         0.000211
+*     32000      208.000000         0.001967         0.000906         0.000200
+*     64000      420.000000         0.001993         0.000876         0.000176
+*    128000      923.000000         0.002206         0.000926         0.000170
+     256000     2005.000000         0.002421         0.000971         0.000163
+     512000     4009.000000         0.002452         0.000940         0.000145
+
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.91 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n))^0.971-> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.09 -> Los valores disminuyen, indicando que n^1.25 es una cota sobrestimada.
+
+    Constante asintótica = 0.0009
+
+        Ordenación rápida con inicialización descendente y umbral 1:
+
+         n           t(n)             t(n)/            t(n)/            t(n)/
+                                (n*log(n))^0.87   (n*log(n))^0.945 (n*log(n))^1.055
+
+*       500        7.000000         0.006408         0.003506         0.001448
+*      1000       14.000000         0.006396         0.003296         0.001246
+*      2000       29.000000         0.006670         0.003240         0.001123
+*      4000       59.000000         0.006882         0.003153         0.001003
+*      8000      122.000000         0.007261         0.003139         0.000917
+*     16000      268.000000         0.008181         0.003339         0.000897
+*     32000      494.000000         0.007769         0.002994         0.000740
+      64000     1048.000000         0.008525         0.003104         0.000705
+     128000     2035.000000         0.008591         0.002956         0.000618
+     256000     4145.000000         0.009109         0.002963         0.000571
+     512000     8654.000000         0.009927         0.003053         0.000542
+    
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.87 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n))^0.945-> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.055 -> Los valores disminuyen, indicando que es una cota sobrestimada.
+
+    Constante asintótica = 0.0032
+
+        Ordenación rápida con inicialización descendente y umbral 10:
+
+         n           t(n)             t(n)/             t(n)/           t(n)/
+                                (n*log(n))^0.89  (n*log(n))^0.973  (n*log(n))^1.076
+
+*       500        4.000000         0.003118         0.001599         0.000699
+*      1000       11.000000         0.004211         0.002022         0.000813
+*      2000       23.000000         0.004364         0.001962         0.000728
+*      4000       45.000000         0.004263         0.001797         0.000615
+*      8000       89.000000         0.004236         0.001674         0.000529
+*     16000      203.000000         0.004880         0.001810         0.000528
+*     32000      435.000000         0.005306         0.001847         0.000499
+*     64000      757.000000         0.004704         0.001538         0.000384
+     128000     1664.000000         0.005285         0.001623         0.000375
+     256000     3657.000000         0.005957         0.001719         0.000368
+     512000     7082.000000         0.005932         0.001609         0.000319
+
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.89 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n))^0.973-> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.076 -> Los valores disminuyen, indicando que es una cota sobrestimada.
+
+    Constante asintótica = 0.0016
+
+        Ordenación rápida con inicialización descendente y umbral 100:
+
+         n           t(n)             t(n)/             t(n)/            t(n)/
+                                (n*log(n))^0.93   (n*log(n))^1.02   (n*log(n))^1.11
+
+*       500        3.000000         0.001695         0.001005         0.000399
+*      1000        5.000000         0.001344         0.000757         0.000274
+*      2000       11.000000         0.001420         0.000759         0.000251
+*      4000       25.000000         0.001562         0.000794         0.000240
+*      8000       54.000000         0.001643         0.000794         0.000220
+*     16000      104.000000         0.001550         0.000713         0.000180
+*     32000      255.000000         0.001870         0.000819         0.000190
+*     64000      522.000000         0.001892         0.000788         0.000167
+     128000     1008.000000         0.001813         0.000719         0.000140
+     256000     2184.000000         0.001954         0.000738         0.000132
+     512000     4725.000000         0.002110         0.000759         0.000125
+
+    *Estas fila son el promedio de 1000 iteraciones del algoritmo.
+
+    ·t(n)/(n*log(n))^0.93 -> Los valores aumentan, indicando que n es una cota subestimada.
+    ·t(n)/(n*log(n))^1.02-> Los valores se mantienen casi constantes, consiguiendo una cota media.
+    ·t(n)/(n*log(n))^1.11 -> Los valores disminuyen, indicando que es una cota sobrestimada.
+
+    Constante asintótica = 0.0008
+
+        · El mejor rendimiento en el caso aleatorio o desordenado es con umbral = 10, ya que usamos 
+          equilibradamente tanto la ordenación por recurisón de Ordenación rápida o Quicksort y la 
+          del Ordenación por Inserción.
+
+        · El mejor rendimiento en el caso ascendente es con umbral = 100, debido a que la mayor parte 
+          del trabajo recae en la inserción, algoritmo en este caso más óptimo en vectores ordenados o 
+          casi ordenados.
+
+        · El mejor umbral en el caso descendente es con umbral = 10, debido a que ofrece un equilibrio
+          entre Ordenación rápida o Quicksort y Ordenación por Inserción.
+    
+    Comparación con el algoritmo de la práctica anterior (Ordenación por Shell):
+        · Los tiempos calculados empíricamente muestran que la ordenación rápida resulta más eficiente que
+         la ordenación Shell, manteniendo una complejidad aproximada de O(n log n), estable incluso en los 
+         casos ascendente y descendente gracias a la selección del pivote mediante la mediana de tres.
+
+        · A partir de n > 2000 esta superioridad se hace evidente, pues los tiempos de ejecución de la ordenación
+         shell suben claramente respecto a los de la ordenación rápida. En tamaños pequeños, la diferencia de tiempos
+         entre ambos algoritmos es menor debido al coste adicional de las llamadas recursivas en Quicksort. En consecuencia,
+         la ordenación rápida conseguirá sus mejores resultados con umbrales 10 o 100, al reducir el número de dichas llamadas.
+ 
+
+
+    Conclusiones:
+        · El algoritmo de Ordenación rápida o Quicksort con mediana de tres presenta una complejidad empírica de O(nlogn), 
+          coincidiendo con la complejidad teórica.
+        · Observamos que la elección de un umbral influye a la hora del rendimiento en distintos casos.
+        · Comparando este algoritmo con Ordenación por Shell, Quicksort ofrece mejores tiempos y mejor rendimiento en ciertos
+          casos donde Shell no consigue mantener la complejidad O(nlogn).
+        · Resumiendo, Quicksort con mediana de tres es un método eficiente y estable, comparado con los algotimos vistos 
+          hasta el momento. 
+
+    Participantes:
+        Sandra Pita Piñón.
+        Marcos González Monné.
+        Candela Naya López.
+    Grupo 3.2 
