@@ -176,11 +176,10 @@ int calcular_tiempo(int v[], int n, int umbral){
     return tiempodespues-tiempoantes;
 }
 
-void menores_desordenada(int v[], int n, int umbral, double t_n1){
+void menores_desordenada(int v[], int n, int umbral, double* t_n1){
     double tiempoantes, tiempodespues, t1, t2, t_total;
     int i, k = 1000;;
-    if (t_n1 < 1000){
-        aleatorio(v,n);
+    if (*t_n1 < 1000){
         tiempoantes = microsegundos();
         for (i = 0; i < k; i++){
             aleatorio(v,n);
@@ -196,7 +195,7 @@ void menores_desordenada(int v[], int n, int umbral, double t_n1){
         tiempodespues = microsegundos();
         t2 = tiempodespues - tiempoantes;
         t_total = (t1-t2)/k;
-        t_n1=t_total;
+        *t_n1=t_total;
             printf("*");
         }
 
@@ -205,10 +204,10 @@ void menores_desordenada(int v[], int n, int umbral, double t_n1){
     }
 }
 
-void menores_ascendente(int v[], int n, int umbral, double t_n1){
+void menores_ascendente(int v[], int n, int umbral, double* t_n1){
     double tiempoantes, tiempodespues, t1, t2, t_total;
     int i, k = 1000;;
-    if (t_n1 < 1000){
+    if (*t_n1 < 1000){
         tiempoantes = microsegundos();
         for (i = 0; i < k; i++){
             quicksort(v,n,umbral);
@@ -221,7 +220,7 @@ void menores_ascendente(int v[], int n, int umbral, double t_n1){
         tiempodespues = microsegundos();
         t2 = tiempodespues - tiempoantes;
         t_total = (t1-t2)/k;
-        t_n1=t_total;
+        *t_n1=t_total;
             printf("*");
         }
 
@@ -230,10 +229,10 @@ void menores_ascendente(int v[], int n, int umbral, double t_n1){
     }
 }
 
-void menores_decendente(int v[], int n, int umbral, double t_n1){
+void menores_decendente(int v[], int n, int umbral, double* t_n1){
     double tiempoantes, tiempodespues, t1, t2, t_total;
     int i, k = 1000;;
-    if (t_n1 < 1000){
+    if (*t_n1 < 1000){
         tiempoantes = microsegundos();
         for (i = 0; i < k; i++){
             inicializar_descendente(v,n);
@@ -249,7 +248,7 @@ void menores_decendente(int v[], int n, int umbral, double t_n1){
         tiempodespues = microsegundos();
         t2 = tiempodespues - tiempoantes;
         t_total = (t1-t2)/k;
-        t_n1=t_total;
+        *t_n1=t_total;
             printf("*");
         }
 
@@ -278,7 +277,7 @@ void tiemposejecuciondesordenada(int umbral){
         for (n=500; n<=512000;n*=2){
             aleatorio(v,n);
             t_n1 = calcular_tiempo(v,n,umbral);
-            menores_desordenada(v,n,umbral,t_n1);
+            menores_desordenada(v,n,umbral,&t_n1);
             if(umbral==1){
                 t_sub = t_n1/ pow(n*log(n),0.89);    
                 t_medio = t_n1/ (n*log(n));
@@ -319,7 +318,7 @@ void tiemposejecucionoascendente(int umbral){
         for (n=500; n<=512000;n*=2){
             inicializar_ascendente(v,n);
             t_n1 = calcular_tiempo(v,n,umbral);
-            menores_ascendente(v,n,umbral,t_n1);
+            menores_ascendente(v,n,umbral,&t_n1);
             if(umbral==1){
                 t_sub = t_n1/ pow(n*log(n),0.87);
                 t_medio = t_n1/ pow(n*log(n),0.925);
@@ -360,7 +359,7 @@ void tiemposejecuciondescendente(int umbral){
         for (n=500; n<=512000;n*=2){
             inicializar_descendente(v,n);
             t_n1 = calcular_tiempo(v,n,umbral);
-            menores_decendente(v,n,umbral,t_n1);
+            menores_decendente(v,n,umbral,&t_n1);
             if(umbral==1){
                 t_sub = t_n1/ pow(n*log(n),0.87);
                 t_medio = t_n1/ pow(n*log(n),0.945);
